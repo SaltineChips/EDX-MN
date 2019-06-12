@@ -10,7 +10,7 @@ clear
 echo "Updating the VM and applying OS patches"
 apt update && apt -y upgrade 
 echo "Updating EDX"
-cd /opt/EDX && git pull && cd Endox/src && chmod +x leveldb/build_detect_platform && chmod +x secp256k1/autogen.sh && make -f makefile.unix && strip Endoxd && cp Endoxd /usr/local/bin && echo "Cleaning up" && make -f makefile.unix clean && cd && Endoxd
+cd /opt/EDX && git pull && cd Endox/src && chmod +x leveldb/build_detect_platform && chmod +x secp256k1/autogen.sh && make -f makefile.unix USE_UPNP=- && strip Endoxd && cp Endoxd /usr/local/bin && echo "Cleaning up" && make -f makefile.unix clean && cd && Endoxd
 
 echo "Switching to node monitor mode. Press ctl-c to exit."
 watch Endoxd getinfo
