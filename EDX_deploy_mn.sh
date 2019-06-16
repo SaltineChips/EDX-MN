@@ -34,7 +34,7 @@ echo "Configuring fail2ban"
 echo -e "[DEFAULT]\nbantime  = 864000\nfindtime  = 600\nmaxretry = 3\ndestemail = root@localhost\nsender = root@localhost\n\naction = %(action_mwl)s\n" >> /etc/fail2ban/jail.local
 service fail2ban restart
 echo "Building EDX... may take extended time on a low memory VPS"
-cd /opt && rm -rf EDX && git clone https://github.com/SaltineChips/Endox.git && cd Endox/src && chmod +x leveldb/build_detect_platform && chmod +x secp256k1/autogen.sh && make -f makefile.unix USE_UPNP=- && strip Endoxd && cp Endoxd /usr/local/bin && echo "Cleaning up" && make -f makefile.unix clean && cd && Endoxd
+cd /opt && rm -rf EDX && git clone https://github.com/SaltineChips/Endox.git && cd Endox/src && chmod +x leveldb/build_detect_platform && chmod +x secp256k1/autogen.sh && make -f makefile.unix USE_UPNP=- && strip Endox-Coind && cp Endox-Coind /usr/local/bin && echo "Cleaning up" && make -f makefile.unix clean && cd && Endox-Coind
 
 read -p "Please enter this MN Private Key and press [ENTER]:" yay
 if [[ -z "$yay" ]]; then
@@ -51,10 +51,10 @@ fi
 echo "Building node config file"
 echo -e "rpcuser=$rpcu\nrpcpassword=$rpcp\nrpcallowip=localhost\nrpcport=51221\nport=51441\\nexternalip=$iiis\nserver=1\nlisten=1\ndaemon=1\nlogtimestamps=1\ntxindex=1\nmaxconnections=500\nmnconflock=1\nmasternode=1\nmasternodeaddr=$iiis:10255\nmasternodeprivkey=$mnpkey\nstake=0\nstaking=0\nseednode=EDX.cryptocoderz.xyz\n" > ~/.EDX/Endox.conf
 
-sleep 10; Endoxd
+sleep 10; Endox-Coind
 
-echo "Setting Endoxd to auto-run on reboot"
-echo -e "@reboot /usr/local/bin/Endoxd\n" >> /var/spool/cron/crontabs/$uris
+echo "Setting Endox-Coind to auto-run on reboot"
+echo -e "@reboot /usr/local/bin/Endox-Coind\n" >> /var/spool/cron/crontabs/$uris
 echo "Switching to node monitor mode. Press ctl-c to exit."
-watch Endoxd getinfo
+watch Endox-Coind getinfo
 echo "Get Endox!!\nReboot the VPS and access it again to confirm all is in order" 
